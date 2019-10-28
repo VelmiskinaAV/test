@@ -1,22 +1,17 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <math.h>
-#include <iostream>
-#include <fstream>
-using namespace std;
+
  
 int main(int argc,char *argv[])
 {
     int myid, numprocs;
     MPI_Status status;
-    double startwtime = 0.0, endwtime;
-    int  namelen;
-    char processor_name[MPI_MAX_PROCESSOR_NAME];
  
     MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD,&numprocs);
     MPI_Comm_rank(MPI_COMM_WORLD,&myid);
-    MPI_Get_processor_name(processor_name,&namelen);
+
  
     //----------------------------------------------
     //Variables' initialization
@@ -44,12 +39,7 @@ int main(int argc,char *argv[])
     rbound=lbound+piece-1;
     if(myid==numprocs-1 && sizeX%2==0) rbound--;
     //----------------------------------------------
-    //Process time evolution
-    if(myid==0){
-       cout << "Computational process started..." << endl;
-       startwtime = MPI_Wtime();
-       cout << "Iteration:" << endl;
-    }
+   
     for(int t=1;t<=sizeT;t++){
        //Messages' exchange-------------------------------------------------------------
        if(myid>0)MPI_Recv(&U_new[lbound-1],1,MPI_DOUBLE,myid-1,1,MPI_COMM_WORLD,&status);
@@ -75,9 +65,9 @@ int main(int argc,char *argv[])
        for(int i=1;i<numprocs;i++){
            MPI_Recv(&U_old[i*piece+1],piece,MPI_DOUBLE,i,3,MPI_COMM_WORLD,&status);
        }
-       endwtime = MPI_Wtime();
+       //endwtime = MPI_Wtime();
        //----------------------------------------------
-       //Printing to file
+     /*  //Printing to file
        ofstream ofs("results.txt");
        if(!ofs){cout << "Error!"; exit;}
        for(int i=0;i<sizeX+1;i++){
@@ -87,7 +77,7 @@ int main(int argc,char *argv[])
        //----------------------------------------------
        cout << "The end" << endl;
        cout << "Time: " << endwtime-startwtime << " sec" << endl;
-       cin.get();
+       cin.get();*/
     }
     MPI_Finalize();
     return 0;
