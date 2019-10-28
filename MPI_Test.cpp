@@ -62,12 +62,14 @@ int main(int argc,char *argv[])
        for(int i=lbound-1;i<=rbound+1;i++){
            U_old[i]=U_new[i];
        }
+	   
        //Messages' exchange--------------------------------------------------------------
        if(myid<numprocs-1)MPI_Ssend(&U_new[rbound],1,MPI_DOUBLE,myid+1,1,MPI_COMM_WORLD);
        if(t<sizeT && myid>0)MPI_Ssend(&U_new[lbound],1,MPI_DOUBLE,myid-1,2,
                                       MPI_COMM_WORLD);
        //--------------------------------------------------------------------------------
     }
+	
     if(myid>0)MPI_Send(&U_new[lbound],piece,MPI_DOUBLE,0,3,MPI_COMM_WORLD);
     if(myid==0){
        for(int i=1;i<numprocs;i++){
