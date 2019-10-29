@@ -1,6 +1,19 @@
 	#include "mpi.h"
 	#include <stdio.h>
+	#include <ctime>
 	
+	int ProcNum, ProcRank;
+	
+	RandomDataInitialization(double* &pMatrix, double* &pVector, int &Size){
+		srand(time(0));
+		for (int i = 0; i < Size; i++){
+			pVector[i] = rand() % 10;
+			for (int j = 0; j < size; j++){
+				pMatrix[i][j] = rand() % 10;
+			}
+		}
+		
+	}
 		// Function for memory allocation and data initialization
 	void ProcessInitialization (double* &pMatrix, double* &pVector, double* &pResult, double* &pProcRows, double* &pProcResult, int &Size, int &RowNum) {
 		
