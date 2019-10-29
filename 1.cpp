@@ -1,35 +1,7 @@
 	#include "mpi.h"
 	#include <stdio.h>
-
-	void main(int argc, char* argv[]) {
-		
-	 double* pMatrix; // The first argument - initial matrix
-	 double* pVector; // The second argument - initial vector
-	 double* pResult; // Result vector for matrix-vector multiplication
-	 int Size; // Sizes of initial matrix and vector
-	 double* pProcRows;
-	 double* pProcResult;
-	 int RowNum;
-	 double Start, Finish, Duration;
-	 
-	 MPI_Init(&argc, &argv);
-	 MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
-	 MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
-
-	 ProcessInitialization(pMatrix, pVector, pResult, pProcRows, pProcResult, Size, RowNum);
-	 
-	 DataDistribution(pMatrix, pProcRows, pVector, Size, RowNum);
-	 
-	 ParallelResultCalculation(pProcRows, pVector, pProcResult, Size, RowNum);
-	 
-	 ResultReplication(pProcResult, pResult, Size, RowNum);
-	 
-	 ProcessTermination(pMatrix, pVector, pResult, pProcRows, pProcResult);
-	 
-	 MPI_Finalize();
-	} 
-
-	// Function for memory allocation and data initialization
+	
+		// Function for memory allocation and data initialization
 	void ProcessInitialization (double* &pMatrix, double* &pVector, double* &pResult, double* &pProcRows, double* &pProcResult, int &Size, int &RowNum) {
 		
 	 int RestRows; // Number of rows, that haven’t been distributed yet
@@ -134,3 +106,34 @@
 	 delete [] pReceiveNum;
 	 delete [] pReceiveInd;
 	} 
+
+	int ProcNum, ProcRank;
+
+	void main(int argc, char* argv[]) {
+		
+	 double* pMatrix; // The first argument - initial matrix
+	 double* pVector; // The second argument - initial vector
+	 double* pResult; // Result vector for matrix-vector multiplication
+	 int Size; // Sizes of initial matrix and vector
+	 double* pProcRows;
+	 double* pProcResult;
+	 int RowNum;
+	 double Start, Finish, Duration;
+	 
+	 MPI_Init(&argc, &argv);
+	 MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
+	 MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
+
+	 ProcessInitialization(pMatrix, pVector, pResult, pProcRows, pProcResult, Size, RowNum);
+	 
+	 DataDistribution(pMatrix, pProcRows, pVector, Size, RowNum);
+	 
+	 ParallelResultCalculation(pProcRows, pVector, pProcResult, Size, RowNum);
+	 
+	 ResultReplication(pProcResult, pResult, Size, RowNum);
+	 
+	 ProcessTermination(pMatrix, pVector, pResult, pProcRows, pProcResult);
+	 
+	 MPI_Finalize();
+	} 
+
