@@ -1,6 +1,7 @@
 	#include "mpi.h"
 	#include <stdio.h>
-	#include <ctime>
+	#include <time.h>
+	#include <stdlib.h>
 	
 	int ProcNum, ProcRank;
 	
@@ -8,7 +9,7 @@
 		srand(time(0));
 		for (int i = 0; i < Size; i++){
 			pVector[i] = rand() % 10;
-			for (int j = 0; j < size; j++){
+			for (int j = 0; j < Size; j++){
 				pMatrix[i][j] = rand() % 10;
 			}
 		}
@@ -25,8 +26,7 @@
 	 printf("\nEnter size of the initial objects: ");
 	 scanf("%d", &Size);
 	 if (Size < ProcNum) {
-	 printf("Size of the objects must be greater than
-	 number of processes! \n ");
+	 printf("Size of the objects must be greater than number of processes! \n ");
 	 }
 	 }
 	 while (Size < ProcNum);
@@ -81,7 +81,7 @@
 	} 
 
 	// Function for calculating partial matrix-vector multiplication
-	void ParallelResultCalculation(double* pProcRows, double* pVector, double*pProcResult, int Size, int RowNum) {
+	void ParallelResultCalculation(double* pProcRows, double* pVector, double* pProcResult, int Size, int RowNum) {
 	 int i, j; // Loop variables
 	 
 	 for (i=0; i<RowNum; i++) {
@@ -120,9 +120,11 @@
 	 delete [] pReceiveInd;
 	} 
 
-	int ProcNum, ProcRank;
+	ProcessTermination(double* pMatrix, double* pVector, double* pResult, double* pProcRows, double* pProcResult){
+		
+	}
 
-	void main(int argc, char* argv[]) {
+	int main() {
 		
 	 double* pMatrix; // The first argument - initial matrix
 	 double* pVector; // The second argument - initial vector
@@ -133,7 +135,7 @@
 	 int RowNum;
 	 double Start, Finish, Duration;
 	 
-	 MPI_Init(&argc, &argv);
+	 MPI_Init(NULL, NULL);
 	 MPI_Comm_size(MPI_COMM_WORLD, &ProcNum);
 	 MPI_Comm_rank(MPI_COMM_WORLD, &ProcRank);
 
@@ -148,5 +150,5 @@
 	 ProcessTermination(pMatrix, pVector, pResult, pProcRows, pProcResult);
 	 
 	 MPI_Finalize();
-	} 
-
+	 return 0;
+	}
