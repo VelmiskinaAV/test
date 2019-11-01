@@ -5,15 +5,14 @@
 	
 	int ProcNum, ProcRank;
 	
-	RandomDataInitialization(double* &pMatrix, double* &pVector, int &Size){
+	void RandomDataInitialization(double* &pMatrix, double* pVector, int &Size){
 		srand(time(0));
-		for (int i = 0; i < Size; i++){
-			pVector[i] = rand() % 10;
-			for (int j = 0; j < Size; j++){
-				pMatrix[i][j] = rand() % 10;
+		for (int i = 0; i < Size * Size; i++){
+			if (i < Size){
+				pVector[i] = rand() % 10;
 			}
+			pMatrix[i] = rand() % 10;
 		}
-		
 	}
 		// Function for memory allocation and data initialization
 	void ProcessInitialization (double* &pMatrix, double* &pVector, double* &pResult, double* &pProcRows, double* &pProcResult, int &Size, int &RowNum) {
@@ -120,7 +119,7 @@
 	 delete [] pReceiveInd;
 	} 
 
-	ProcessTermination(double* pMatrix, double* pVector, double* pResult, double* pProcRows, double* pProcResult){
+	void ProcessTermination(double* pMatrix, double* pVector, double* pResult, double* pProcRows, double* pProcResult){
 		
 	}
 
